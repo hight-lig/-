@@ -17,6 +17,7 @@ public class SpringMVCConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private DateConverter dateConverter;
+
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();

@@ -23,5 +23,6 @@
     <orderEntry type="library" exported="" name="springmvcs" level="project" />
     <orderEntry type="library" exported="" name="log4j" level="project" />
     <orderEntry type="library" name="spring-mybatis-pool" level="project" />
+    <orderEntry type="library" name="jstl" level="project" />
   </component>
 </module>

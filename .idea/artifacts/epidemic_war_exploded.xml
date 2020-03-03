@@ -11,6 +11,7 @@
           <element id="library" level="project" name="springmvcs" />
           <element id="library" level="project" name="log4j" />
           <element id="library" level="project" name="spring-mybatis-pool" />
+          <element id="library" level="project" name="jstl" />
         </element>
       </element>
     </root>
