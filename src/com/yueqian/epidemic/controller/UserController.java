@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -19,7 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @RequestMapping("/login")
-    public String login(UserInfo userInfo, Model model){
+    public String login(UserInfo userInfo, Model model, HttpSession session){
         loggeer.debug("这是登录请求的....userInfo.account:" + userInfo.getAccount() + ",userInfo.password:" + userInfo.getPassword());
         UserInfo user = userService.findByAccount(userInfo.getAccount());
         if (user == null) {
@@ -28,9 +29,17 @@ public class UserController {
         }
         if (user.getPassword().equals(userInfo.getPassword())) {
             //登录成功了
-            return "main";
+            session.setAttribute("loginedUser",user);
+            return "redirect:/main.jsp";
         }
         model.addAttribute("msg", "用户密码错误！");
         return "login";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        //清空session
+        session.invalidate();
+        return "redirect:/login.jsp";
     }
 }

@@ -84,12 +84,73 @@
         var current = new Date();
         datepicker.datepicker("setDate", current);
         var date1 = new Date();
-        date1.setDate(current.getDate() - 7);
-        datepicker.datepicker("setStartDate", date1);
-        datepicker.datepicker("setEndDate", current);
+        date1.setDate(current.getDate() + 7);
+        datepicker.datepicker("setStartDate", current);
+        datepicker.datepicker("setEndDate", date1);
+
+        //给日期绑定一个事件（当日期值被改的时候触发）
+        datepicker.datepicker().on("changeDate", loadProvinceList);
+        //装载省份列表
+        loadProvinceList();
     });
 
 
+    function loadProvinceList() {
+        //获取当前日期框中的值
+        var date = $("#dataDate").val();
+        //从服务器获取取还没有录入数据的省份列表
+        $.get("${pageContext.request.contextPath}/province/ajax/noDataList", {date: date}, function (resp) {
+            console.info(resp);
+            if (resp.code < 0) {
+                alert(resp.msg);
+            } else {
+                fillProvinceToTable(resp.data);
+            }
+        }, "json");
+    }
+
+
+    function fillProvinceToTable(array) {
+        //清空消息
+        $("#msg").html("");
+        //清空表格
+        var tbody1 = $("#body1");
+        //tbody1.empty();
+        if (array && array.length > 0) {
+            provinces = array;
+            //填充到table中
+            $.each(array, function (index, province) {
+                var tr = $("<tr>");
+                var td = $("<td>");
+                td.text(province.provinceName);
+                tr.append(td);
+
+                td = $("<td>");
+                td.html('<input type="text" name="affirmed" size="4" maxlength="4" class="form-control" value="0">');
+                tr.append(td);
+
+                td = $("<td>");
+                td.html('<input type="text" name="suspected" size="4" maxlength="4" class="form-control" value="0">');
+                tr.append(td);
+
+                td = $("<td>");
+                td.html('<input type="text" name="isolated" size="4" maxlength="4" class="form-control" value="0">');
+                tr.append(td);
+
+                td = $("<td>");
+                td.html('<input type="text" name="cured" size="4" maxlength="4" class="form-control" value="0">');
+                tr.append(td);
+
+                td = $("<td>");
+                td.html('<input type="text" name="dead" size="4" maxlength="4" class="form-control" value="0">');
+                tr.append(td);
+
+                tbody1.append(tr);
+            });
+        } else {
+            $("#msg").html("本日所有省份都已经录入了数据!");
+        }
+    }
 
 </script>
 </body>
